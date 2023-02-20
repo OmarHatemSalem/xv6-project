@@ -172,8 +172,16 @@ void calc_stats(int arr[], int n)
 
 int main(int argc, char *argv[])
 {
+    if (argc < 2)
+    {
+        printf(2, "ERROR: Not enough arguments");
+        exit();
+        /* code */
+    }
     int n = argc - 1;
     int* arr = (int*) malloc(n*sizeof(int));
+
+    
 
     for (int i=0; i<n; i++) {
       // printf(1, "%c\n", argv);

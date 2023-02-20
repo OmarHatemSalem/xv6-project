@@ -7,6 +7,12 @@ int validateNumber(char* str);
 
 int main(int argc, char *argv[])
 {
+    if (argc < 2)
+    {
+        printf(2, "ERROR: Not enough arguments");
+        exit();
+        /* code */
+    }
   printf(1, "Number of arguments: %d\n", argc-1);
   printf(1, "Target: %s\n", argv[1]);
   int target, number;
