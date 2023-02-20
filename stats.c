@@ -3,6 +3,8 @@
 #include "user.h" 
 #include "float.h"
 
+#define INT_MAX 2147483647
+
 void merge(int arr[], int p, int q, int r) {
 
   // Create L ← A[p..q] and M ← A[q+1..r]
@@ -134,7 +136,7 @@ float sqrt(float x, int precision)
 
 void calc_stats(int arr[], int n) 
 {
-    float sum = 0, minScore=4, maxScore=0, sumSq = 0, count=0;
+    float sum = 0, minScore=INT_MAX, maxScore=-1*INT_MAX, sumSq = 0, count=0;
 
     for (int i=0; i<n; i++) {
         float arri = (float)arr[i];

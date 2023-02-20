@@ -45,6 +45,7 @@ printfloat(int fd, float xx)
 	int fin=(int)(xx*100)-beg*100;
   printint(fd, beg, 10, 1);
   putc(fd, '.');
+  if (fin < 0) fin *= -1;
 	if(fin<10)
     putc(fd, '0');
 	printint(fd, fin, 10, 1);
