@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "cctype": "c",
+        "stdbool.h": "c",
+        "math.h": "c",
+        "user.h": "c",
+        "stat.h": "c",
+        "types.h": "c"
+    }
+}
