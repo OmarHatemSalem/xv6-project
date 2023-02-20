@@ -1,9 +1,8 @@
 #include "types.h"
 #include "stat.h"
 #include "user.h" 
-#include <stdbool.h>
 
-bool validateNumber(char* str);
+int validateNumber(char* str);
 
 
 int main(int argc, char *argv[])
@@ -39,7 +38,7 @@ int main(int argc, char *argv[])
   exit();
 }
 
-bool validateNumber(char* str)
+int validateNumber(char* str)
 {
     int i = 0;
     while(str[i] != '\0')
@@ -49,9 +48,9 @@ bool validateNumber(char* str)
 
         if(str[i] < '0' || str[i] > '9' )
         {
-        return false;
+        return 0;
         }
         i++;
     }
-    return true;
+    return 1;
 }
