@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        printf(2, "ERROR: Not enough arguments");
+        printf(2, "ERROR: Not enough arguments\n");
         exit();
         /* code */
     }
