@@ -23,6 +23,8 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int getyear(void);
+int __ftruncate (int, off_t);
 
 // ulib.c
 int stat(const char*, struct stat*);
@@ -38,4 +40,3 @@ void* malloc(uint);
 void free(void*);
 int atoi(const char*);
 void printfloat(int fd, float xx);
-float stof(const char* s);

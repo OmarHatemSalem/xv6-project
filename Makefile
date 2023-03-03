@@ -184,6 +184,8 @@ UPROGS=\
 	_sort\
 	_search\
 	_stats\
+	_getyear\
+	_less\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
