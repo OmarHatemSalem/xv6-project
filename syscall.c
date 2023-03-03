@@ -82,6 +82,7 @@ argstr(int n, char **pp)
   return fetchstr(addr, pp);
 }
 
+
 extern int sys_chdir(void);
 extern int sys_close(void);
 extern int sys_dup(void);
@@ -103,6 +104,28 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
+extern int sys_getyear(void);
+extern int sys_ftruncate(void);
+
+int 
+sys_getyear(void) 
+{
+
+return 1975;
+} 
+
+int
+sys_ftruncate (void)
+{
+
+  int fd;
+  off_t length;
+
+  if (argint(0, &fd) < 0) return -1;
+  if (argint(1, &length) < 0) return -1;
+
+  
+}
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -126,6 +149,8 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_getyear] sys_getyear,
+[SYS_ftruncate] sys_ftruncate
 };
 
 void
