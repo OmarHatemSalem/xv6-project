@@ -115,3 +115,17 @@ sys_getprocinfo(void)
 
   return getprocinfo(pid, st);
 }
+
+int
+sys_date(void){
+  struct rtcdate *myDate;
+    
+    if(argptr (0 , (void*)&myDate ,sizeof(*myDate)) < 0 ){
+      cprintf("Error in sys_getali, yo\n");
+      return -1;
+    };
+ 
+  cmostime(myDate);
+
+  return 0;
+}

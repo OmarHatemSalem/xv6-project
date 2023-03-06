@@ -29,6 +29,8 @@ int getyear(void);
 int ftruncate(int, const void*, int);
 int getprocs(int*, int*);
 int getprocinfo(int, struct filtered_proc*);
+int date(struct rtcdate *r);
+
 
 // ulib.c
 int stat(const char*, struct stat*);

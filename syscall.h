@@ -24,3 +24,4 @@
 #define SYS_ftruncate 23
 #define SYS_getprocs 24
 #define SYS_getprocinfo 25
+#define SYS_date 26
