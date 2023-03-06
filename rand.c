@@ -3,6 +3,21 @@
 #include "user.h"
 #include "date.h"
 
+int isNumber(char number[])
+{
+    int i = 0;
+
+    //checking for negative numbers
+    if (number[0] == '-')
+        i = 1;
+    for (; number[i] != 0; i++)
+    {
+        // if (!isdigit(number[i]))
+        if (number[i] > '9' || number[i] < '0')
+            return 0;
+    }
+    return 1;
+}
 
 
 int CalcDays(int iMonth, int iDay, int iYear)
@@ -25,6 +40,12 @@ main(int argc, char *argv[])
     exit();
     /* code */
     }
+
+    if (!isNumber(argv[1]) || !isNumber(argv[2])) {
+        printf(2, "Entires must be an integer\n");
+        exit();
+      }
+
     int lowerBound = atoi(argv[1]);
     int upperBound = atoi(argv[2]);
 
