@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "stat.h"
 
 struct {
   struct spinlock lock;
@@ -531,4 +532,61 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+int
+getprocs(int* processesIds, int* count)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  // add item to linked list
+  // fill processesIds array with pids
+  int i = 0;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->state == UNUSED)
+      continue;
+    processesIds[i] = p->pid;
+    i++;
+  }
+  *count = i;
+  release(&ptable.lock);
+  return 22;
+}
+
+int 
+getprocinfo(int pid, struct filtered_proc* found_process)
+{
+  static char *states[] = {
+  [UNUSED]    "unused",
+  [EMBRYO]    "embryo",
+  [SLEEPING]  "sleep ",
+  [RUNNABLE]  "runble",
+  [RUNNING]   "run   ",
+  [ZOMBIE]    "zombie"
+  };
+  struct proc *p;
+	acquire(&ptable.lock);
+	for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+	  if(p->pid == pid){
+			break;
+		}
+	}
+
+  // check if no process was found
+  if(p == &ptable.proc[NPROC] || p->state == UNUSED) {
+    release(&ptable.lock);
+    return -1;
+  }
+
+  // fill found_process
+  found_process->pid = p->pid;
+  found_process->sz = p->sz;
+  found_process->parentpid = p->parent->pid;
+  strncpy(found_process->name, p->name, 16);
+  if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
+    strncpy(found_process->state, states[p->state], 16);
+  else
+    strncpy(found_process->state, "???", 16);
+  release(&ptable.lock);
+	return 23;
 }

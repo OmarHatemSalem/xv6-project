@@ -1,5 +1,7 @@
 struct stat;
 struct rtcdate;
+struct filtered_proc;
+
 
 // system calls
 int fork(void);
@@ -24,7 +26,9 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getyear(void);
-int __ftruncate (int, off_t);
+int ftruncate(int, const void*, int);
+int getprocs(int*, int*);
+int getprocinfo(int, struct filtered_proc*);
 
 // ulib.c
 int stat(const char*, struct stat*);

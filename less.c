@@ -9,14 +9,25 @@ less(int fd)
 {
   int n;
 
+  // ftruncate(fd);
+
+
+  // for (int i=0; i<10; i++) {
+  //   n = read(fd, buf, sizeof(buf));
+  //   if (write(1, buf, n) != n) {
+  //     printf(1, "less: write error\n");
+  //     exit();
+  //   }
+  // }
+
   while((n = read(fd, buf, sizeof(buf))) > 0) {
-    if (write(1, buf, n) != n) {
-      printf(1, "cat: write error\n");
+    if (ftruncate(1, buf, n) != n) {
+      // printf(1, "less: write error\n");
       exit();
     }
   }
   if(n < 0){
-    printf(1, "cat: read error\n");
+    printf(1, "less: read error\n");
     exit();
   }
 }

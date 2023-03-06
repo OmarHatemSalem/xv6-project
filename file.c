@@ -155,3 +155,46 @@ filewrite(struct file *f, char *addr, int n)
   panic("filewrite");
 }
 
+//PAGEBREAK!
+// Write to truncate f.
+int
+filetruncate(struct file *f, char *addr, int n)
+{
+  int r;
+  const off_t LENGTH = 1024; 
+  if(f->writable == 0)
+    return -1;
+  if(f->type == FD_PIPE)
+    return pipewrite(f->pipe, addr, LENGTH);
+  if(f->type == FD_INODE){
+    // write a few blocks at a time to avoid exceeding
+    // the maximum log transaction size, including
+    // i-node, indirect block, allocation blocks,
+    // and 2 blocks of slop for non-aligned writes.
+    // this really belongs lower down, since writei()
+    // might be writing a device like the console.
+    int max = ((MAXOPBLOCKS-1-1-2) / 2) * 512;
+    int i = 0;
+    while(i < LENGTH){
+      int n1 = LENGTH - i;
+      if(n1 > max)
+        n1 = max;
+
+      begin_op();
+      ilock(f->ip);
+      if ((r = writei(f->ip, addr + i, f->off, n1)) > 0)
+        f->off += r;
+      iunlock(f->ip);
+      end_op();
+
+      if(r < 0)
+        break;
+      if(r != n1)
+        panic("short filetruncate");
+      i += r;
+    }
+    return i == LENGTH ? LENGTH : -1;
+  }
+  panic("filetruncate");
+}
+

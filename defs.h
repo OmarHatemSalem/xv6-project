@@ -9,6 +9,8 @@ struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
+struct filtered_proc;
+
 
 // bio.c
 void            binit(void);
@@ -33,6 +35,7 @@ void            fileinit(void);
 int             fileread(struct file*, char*, int n);
 int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
+int             filetruncate(struct file*, char*, int n);
 
 // fs.c
 void            readsb(int dev, struct superblock *sb);
@@ -120,6 +123,8 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
+int             getprocs(int*, int*); // added function
+int             getprocinfo(int, struct filtered_proc*); // added function
 
 // swtch.S
 void            swtch(struct context**, struct context*);

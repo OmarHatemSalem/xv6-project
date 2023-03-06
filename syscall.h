@@ -22,3 +22,5 @@
 #define SYS_close  21
 #define SYS_getyear 22
 #define SYS_ftruncate 23
+#define SYS_getprocs 24
+#define SYS_getprocinfo 25

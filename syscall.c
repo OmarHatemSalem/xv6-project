@@ -6,6 +6,9 @@
 #include "proc.h"
 #include "x86.h"
 #include "syscall.h"
+// #include <errno.h>
+// #include <sys/types.h>
+// #include <unistd.h>
 
 // User code makes a system call with INT T_SYSCALL.
 // System call number in %eax.
@@ -106,6 +109,8 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_getyear(void);
 extern int sys_ftruncate(void);
+extern int sys_getprocs(void);
+extern int sys_getprocinfo(void);
 
 int 
 sys_getyear(void) 
@@ -114,18 +119,6 @@ sys_getyear(void)
 return 1975;
 } 
 
-int
-sys_ftruncate (void)
-{
-
-  int fd;
-  off_t length;
-
-  if (argint(0, &fd) < 0) return -1;
-  if (argint(1, &length) < 0) return -1;
-
-  
-}
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -150,7 +143,9 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_getyear] sys_getyear,
-[SYS_ftruncate] sys_ftruncate
+[SYS_ftruncate] sys_ftruncate,
+[SYS_getprocs] sys_getprocs,
+[SYS_getprocinfo] sys_getprocinfo,
 };
 
 void

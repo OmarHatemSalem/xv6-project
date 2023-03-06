@@ -89,3 +89,29 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int 
+sys_getprocs(void)
+{
+  int *st;
+  int *count;
+  if(argptr(0, (void*)&st, sizeof(st)) < 0 || argptr(1, (void*)&count, sizeof(*st)) < 0)
+    return -1;
+
+  return getprocs(st, count);
+}
+
+int 
+sys_getprocinfo(void)
+{
+  int pid;
+  struct filtered_proc *st;
+  if(argint(0, &pid) < 0)
+    return -1;
+  // use argstr to check if second argument is a valid string
+  // char *tmp = name;
+  if((argptr(1, (void*)&st, sizeof(st)) < 0))
+    return -1;
+
+  return getprocinfo(pid, st);
+}
