@@ -188,8 +188,10 @@ UPROGS=\
 	_less\
 	_ps\
 	_rand\
-	_parchild\
+	_task\
 	_seqpar\
+	_parchild\
+
 
 fs.img: mkfs README data2.txt $(UPROGS)
 	./mkfs fs.img README data2.txt $(UPROGS)

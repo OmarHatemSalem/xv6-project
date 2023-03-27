@@ -18,8 +18,12 @@ void test_optimal_nproc(const char* path);
 
 int main()
 {
+    printf(1, "hi\n");
     int* rdata = getArray("data2.txt");
+    printf(1, "hi 2\n");
+
     int n = getCount("data2.txt");
+    printf(1, "hi 2\n");
 
     int t1,t2;
     t1 = uptime();
