@@ -435,7 +435,7 @@ int* getArray(const char* path)
 
     ndata[j] = atoi(data);
 
-
+    close(fp);
     return ndata; 
 }
 
