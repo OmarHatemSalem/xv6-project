@@ -89,6 +89,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  p->priority = 20;
 
   release(&ptable.lock);
 
@@ -580,6 +581,7 @@ getprocinfo(int pid, struct filtered_proc* found_process)
 
   // fill found_process
   found_process->pid = p->pid;
+  found_process->priority = p->priority;
   found_process->sz = p->sz;
   found_process->parentpid = p->parent->pid;
   strncpy(found_process->name, p->name, 16);

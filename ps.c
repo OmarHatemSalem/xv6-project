@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     for(int i=0; i<counter; i++)
     {
       getprocinfo(processesIds[i], p);
-      printf(1, "pid: %d, parent id: %d, name: %s, size: %d, state: %s\n", p->pid, (p->parentpid>0 && p->parentpid<NPROC)?p->parentpid:0, p->name, p->sz, p->state);
+      printf(1, "pid: %d, parent id: %d, name: %s, size: %d, state: %s, priority: %d\n", p->pid, (p->parentpid>0 && p->parentpid<NPROC)?p->parentpid:0, p->name, p->sz, p->state,  p->priority);
     }
   }
   else if(argc == 2 && validnumber(argv[1]) && atoi(argv[1])>0)
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     p = malloc(sizeof(struct filtered_proc));
     int pid = atoi(argv[1]);
     if(getprocinfo(pid, p)>0)
-      printf(1, "pid: %d, parent id: %d, name: %s, size: %d, state: %s\n", p->pid, (p->parentpid>0 && p->parentpid<NPROC)?p->parentpid:0, p->name, p->sz, p->state);
+      printf(1, "pid: %d, parent id: %d, name: %s, size: %d, state: %s, priority: %d\n", p->pid, (p->parentpid>0 && p->parentpid<NPROC)?p->parentpid:0, p->name, p->sz, p->state,  p->priority);
     else
       printf(2, "Error: Process with pid %d not found or unused\n", pid);
   }

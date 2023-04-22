@@ -12,8 +12,9 @@ struct stat {
 
 struct filtered_proc {
   uint sz;                     // Size of process memory (bytes)
-  char state[16];        // Process state
+  char state[16];              // Process state
   int pid;                     // Process ID
+  uint priority;               // Process Priority
   int parentpid;               // Parent Process ID
   char name[16];               // Process name (debugging)
 };
