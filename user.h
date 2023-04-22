@@ -30,6 +30,7 @@ int ftruncate(int, const void*, int);
 int getprocs(int*, int*);
 int getprocinfo(int, struct filtered_proc*);
 int date(struct rtcdate *r);
+int set_priority(int pid, int priority);
 
 
 // ulib.c

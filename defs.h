@@ -125,6 +125,7 @@ void            wakeup(void*);
 void            yield(void);
 int             getprocs(int*, int*); // added function
 int             getprocinfo(int, struct filtered_proc*); // added function
+int             nice(int pid, int priority); //added function
 
 // swtch.S
 void            swtch(struct context**, struct context*);

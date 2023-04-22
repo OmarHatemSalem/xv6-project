@@ -112,6 +112,7 @@ extern int sys_ftruncate(void);
 extern int sys_getprocs(void);
 extern int sys_getprocinfo(void);
 extern int sys_date(void);
+extern int sys_set_priority(void);
 
 int 
 sys_getyear(void) 
@@ -147,7 +148,8 @@ static int (*syscalls[])(void) = {
 [SYS_ftruncate] sys_ftruncate,
 [SYS_getprocs] sys_getprocs,
 [SYS_getprocinfo] sys_getprocinfo,
-[SYS_date]    sys_date
+[SYS_date]    sys_date,
+[SYS_set_priority]    sys_set_priority
 };
 
 void

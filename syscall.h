@@ -25,3 +25,4 @@
 #define SYS_getprocs 24
 #define SYS_getprocinfo 25
 #define SYS_date 26
+#define SYS_set_priority 27

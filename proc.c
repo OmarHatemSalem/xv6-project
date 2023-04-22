@@ -592,3 +592,32 @@ getprocinfo(int pid, struct filtered_proc* found_process)
   release(&ptable.lock);
 	return 23;
 }
+
+int nice(int pid, int priority) {
+  struct proc *p;
+	acquire(&ptable.lock);
+	for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+	  if(p->pid == pid){
+			break;
+		}
+	}
+
+  // check if no process was found
+  if(p == &ptable.proc[NPROC] || p->state == UNUSED) {
+    release(&ptable.lock);
+    return -1;
+  }
+
+  if(priority >= 40 || priority < 0) {
+    release(&ptable.lock);
+    return -2;
+  }
+
+  // fill found_process
+  int old_priority = p->priority; 
+  p->priority = priority;
+  release(&ptable.lock);
+
+
+  return old_priority;
+}

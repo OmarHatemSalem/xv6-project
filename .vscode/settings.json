@@ -9,6 +9,7 @@
         "syscall.h": "c",
         "new": "c",
         "cstdio": "c",
-        "param.h": "c"
+        "param.h": "c",
+        "defs.h": "c"
     }
 }
