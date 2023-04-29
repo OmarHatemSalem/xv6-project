@@ -187,8 +187,10 @@ UPROGS=\
 	_getyear\
 	_less\
 	_ps\
-	_rand\
+	_sched\
 	_nice\
+	_rand\
+
 
 
 fs.img: mkfs README data2.txt $(UPROGS)
