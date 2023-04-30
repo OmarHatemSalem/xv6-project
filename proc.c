@@ -353,7 +353,7 @@ scheduler(void)
           max = p->priority;
           continue;
         }
-        else if (p->priority >= max){
+        else if (p->priority > max){
           max = p->priority;
           highestPriorityProc = p;
         }
