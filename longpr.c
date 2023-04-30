@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     {
         // first child done to be ignored due to low priority (starved)
         printf(1, "CHILD 3: INSIDE CHILDE: Child process started with pid: %d\n", getpid());
-        set_priority(getpid(), 5);
+        set_priority(getpid(), 15);
         printf(1, "CHILD 3: CHANGED PRI: Child process with pid: %d has priority: %d\n", getpid(), 5);
         for(int z = 0; z < 400000; z+=1)
         {
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
     
     if(child == 0) 
     {
-        while(wait());
+        while(wait()>0);
         printf(1, "FINISHED: Parent process with pid: %d finished\n", parent_pid);
     }
     exit();

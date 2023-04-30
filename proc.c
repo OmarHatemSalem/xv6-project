@@ -372,7 +372,7 @@ scheduler(void)
       // c->proc = 0;
     }
 
-    highestPriorityProc->priority = ((float)highestPriorityProc->priority * 0.50) + 1; 
+    // highestPriorityProc->priority = ((float)highestPriorityProc->priority * 0.50) + 1; 
     c->proc = highestPriorityProc;
     switchuvm(highestPriorityProc);
     highestPriorityProc->state = RUNNING;
