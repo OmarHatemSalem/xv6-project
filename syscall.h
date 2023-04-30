@@ -26,3 +26,5 @@
 #define SYS_getprocinfo 25
 #define SYS_date 26
 #define SYS_set_priority 27
+#define SYS_printptable 28
+#define SYS_yield 29

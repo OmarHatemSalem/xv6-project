@@ -141,3 +141,13 @@ sys_set_priority(void) {
   return nice(pid, priority);
   // return 0;
 }
+
+int
+sys_printptable(void) {
+  return printptable();
+}
+
+int sys_yield(void) {
+  yield();
+  return 0;
+}

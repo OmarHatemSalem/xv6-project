@@ -350,9 +350,10 @@ scheduler(void)
         if(highestPriorityProc == 0){
           // panic("Sally 3ala rasool ellah\n");
           highestPriorityProc = p;
+          max = p->priority;
           continue;
         }
-        else if (p->priority > max){
+        else if (p->priority >= max){
           max = p->priority;
           highestPriorityProc = p;
         }
@@ -535,38 +536,126 @@ kill(int pid)
 // Print a process listing to console.  For debugging.
 // Runs when user types ^P on console.
 // No lock to avoid wedging a stuck machine further.
+// void
+// procdump(void)
+// {
+//   static char *states[] = {
+//   [UNUSED]    "unused",
+//   [EMBRYO]    "embryo",
+//   [SLEEPING]  "sleep ",
+//   [RUNNABLE]  "runble",
+//   [RUNNING]   "run   ",
+//   [ZOMBIE]    "zombie"
+//   };
+//   int i;
+//   struct proc *p;
+//   char *state;
+//   uint pc[10];
+
+//   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+//     if(p->state == UNUSED)
+//       continue;
+//     if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
+//       state = states[p->state];
+//     else
+//       state = "???";
+//     cprintf("%d %s %s", p->pid, state, p->name);
+//     if(p->state == SLEEPING){
+//       getcallerpcs((uint*)p->context->ebp+2, pc);
+//       for(i=0; i<10 && pc[i] != 0; i++)
+//         cprintf(" %p", pc[i]);
+//     }
+//     cprintf("\n");
+//   }
+// }
+
 void
 procdump(void)
 {
-  static char *states[] = {
-  [UNUSED]    "unused",
-  [EMBRYO]    "embryo",
-  [SLEEPING]  "sleep ",
-  [RUNNABLE]  "runble",
-  [RUNNING]   "run   ",
-  [ZOMBIE]    "zombie"
+    static char *states[] = {
+    [UNUSED]    "unused",
+    [EMBRYO]    "embryo",
+    [SLEEPING]  "sleep ",
+    [RUNNABLE]  "runble",
+    [RUNNING]   "run   ",
+    [ZOMBIE]    "zombie"
   };
-  int i;
   struct proc *p;
-  char *state;
-  uint pc[10];
+  acquire(&ptable.lock);
+  cprintf("-----------------------------------------------------------------\n");
+  cprintf("|PID            |NAME           |Priority       |STATE          |\n");
+  cprintf("-----------------------------------------------------------------\n");
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    char state[16] = "";
     if(p->state == UNUSED)
       continue;
+      
     if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
-      state = states[p->state];
+      strncpy(state, states[p->state], 16);
     else
-      state = "???";
-    cprintf("%d %s %s", p->pid, state, p->name);
-    if(p->state == SLEEPING){
-      getcallerpcs((uint*)p->context->ebp+2, pc);
-      for(i=0; i<10 && pc[i] != 0; i++)
-        cprintf(" %p", pc[i]);
+      strncpy(state, "???", 16);
+
+    // format the print statement to be alligned in a table
+    char pid_extraspaces[16];
+    char name[16];
+    char priority[16];
+    char status[16];
+
+    int pid_len = 0;
+    int pid_temp = p->pid;
+    while(pid_temp > 0) {
+      pid_temp /= 10;
+      pid_len++;
     }
-    cprintf("\n");
+
+    // add extra spaces to pid
+    for(int i = 0; i < 15 - pid_len; i++) {
+      pid_extraspaces[i] = ' ';
+    }
+    pid_extraspaces[15 - pid_len] = '\0';
+
+    // add extra spaces to name
+    int name_len = 0;
+    while(p->name[name_len] != '\0') {
+      name_len++;
+    }
+    strncpy(name, p->name, name_len);
+    for(int i = 0; i < 15 - name_len; i++) {
+      name[name_len + i] = ' ';
+    }
+    name[15] = '\0';
+
+    // add extra spaces to priority
+    int priority_len = 0;
+    int priority_temp = p->priority;
+    while(priority_temp > 0) {
+      priority_temp /= 10;
+      priority_len++;
+    }
+    for(int i = 0; i < 15 - priority_len; i++) {
+      priority[i] = ' ';
+    }
+    priority[15 - priority_len] = '\0';
+
+    // add extra spaces to status
+    int status_len = 0;
+    while(state[status_len] != '\0') {
+      status_len++;
+    }
+    strncpy(status, state, status_len);
+    for(int i = 0; i < 15 - status_len; i++) {
+      status[status_len + i] = ' ';
+    }
+    status[15] = '\0';
+
+    cprintf("|%d%s|%s|%d%s|%s|\n", p->pid, pid_extraspaces, name, p->priority, priority, status);
+    // cprintf("pid: %d, name: %s, status: %s, priority: %d\n", p->pid, p->name, states[],p->priority);
   }
+  release(&ptable.lock);
+  cprintf("-----------------------------------------------------------------\n");
 }
+
 
 int
 getprocs(int* processesIds, int* count)
@@ -653,4 +742,89 @@ int nice(int pid, int priority) {
 
 
   return old_priority;
+}
+
+int printptable() {
+  static char *states[] = {
+    [UNUSED]    "unused",
+    [EMBRYO]    "embryo",
+    [SLEEPING]  "sleep ",
+    [RUNNABLE]  "runble",
+    [RUNNING]   "run   ",
+    [ZOMBIE]    "zombie"
+  };
+  struct proc *p;
+  acquire(&ptable.lock);
+  cprintf("-----------------------------------------------------------------\n");
+  cprintf("|PID            |NAME           |Priority       |STATE          |\n");
+  cprintf("-----------------------------------------------------------------\n");
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    char state[16] = "";
+    if(p->state == UNUSED)
+      continue;
+      
+    if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
+      strncpy(state, states[p->state], 16);
+    else
+      strncpy(state, "???", 16);
+
+    // format the print statement to be alligned in a table
+    char pid_extraspaces[16];
+    char name[16];
+    char priority[16];
+    char status[16];
+
+    int pid_len = 0;
+    int pid_temp = p->pid;
+    while(pid_temp > 0) {
+      pid_temp /= 10;
+      pid_len++;
+    }
+
+    // add extra spaces to pid
+    for(int i = 0; i < 15 - pid_len; i++) {
+      pid_extraspaces[i] = ' ';
+    }
+    pid_extraspaces[15 - pid_len] = '\0';
+
+    // add extra spaces to name
+    int name_len = 0;
+    while(p->name[name_len] != '\0') {
+      name_len++;
+    }
+    strncpy(name, p->name, name_len);
+    for(int i = 0; i < 15 - name_len; i++) {
+      name[name_len + i] = ' ';
+    }
+    name[15] = '\0';
+
+    // add extra spaces to priority
+    int priority_len = 0;
+    int priority_temp = p->priority;
+    while(priority_temp > 0) {
+      priority_temp /= 10;
+      priority_len++;
+    }
+    for(int i = 0; i < 15 - priority_len; i++) {
+      priority[i] = ' ';
+    }
+    priority[15 - priority_len] = '\0';
+
+    // add extra spaces to status
+    int status_len = 0;
+    while(state[status_len] != '\0') {
+      status_len++;
+    }
+    strncpy(status, state, status_len);
+    for(int i = 0; i < 15 - status_len; i++) {
+      status[status_len + i] = ' ';
+    }
+    status[15] = '\0';
+
+    cprintf("|%d%s|%s|%d%s|%s|\n", p->pid, pid_extraspaces, name, p->priority, priority, status);
+    // cprintf("pid: %d, name: %s, status: %s, priority: %d\n", p->pid, p->name, states[],p->priority);
+  }
+  release(&ptable.lock);
+  cprintf("-----------------------------------------------------------------\n");
+  return 28;
 }
